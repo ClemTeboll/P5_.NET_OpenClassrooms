@@ -57,7 +57,7 @@ namespace TheCarHub.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,YearDate,Price,IsAvailable")] Car car)
+        public async Task<IActionResult> Create([Bind("Id,Name,UrlImage,Description,YearDate,Price,IsAvailable")] Car car)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace TheCarHub.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,YearDate,Price,IsAvailable")] Car car)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UrlImage,Description,YearDate,Price,IsAvailable")] Car car)
         {
             if (id != car.Id)
             {
