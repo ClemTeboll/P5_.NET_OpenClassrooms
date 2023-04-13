@@ -1,4 +1,7 @@
-﻿namespace TheCarHub.Areas.Admin.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace TheCarHub.Areas.Admin.Models
 {
     public class Car
     {
@@ -6,6 +9,8 @@
         public string Name { get; set; }
         public string UrlImage { get; set; }
         public string Description { get; set; }
+        [NotMapped]
+        public IFormFile Image { get; set; }
         public DateTime YearDate { get; set; }
         public decimal Price { get; set; }
         public bool IsAvailable { get; set; }
