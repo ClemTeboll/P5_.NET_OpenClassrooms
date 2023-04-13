@@ -14,5 +14,10 @@ namespace TheCarHub.Areas.Admin.Models
         public DateTime YearDate { get; set; }
         public decimal Price { get; set; }
         public bool IsAvailable { get; set; }
+
+
+        public ICollection<CarImage> Images { get; } = new List<CarImage>();
+
+        public CarDetails CarDetails { get; set; }
     }
 }

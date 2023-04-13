@@ -15,5 +15,9 @@
         public DateTime LotDate { get; set; }
         public decimal SellingPrice { get; set; }
         public DateTime SaleDate { get; set; }
+
+
+        public int CarId { get; set; } // required foreign key property
+        public Car Car { get; set; } = null!; // required reference navigation to principal
     }
 }
