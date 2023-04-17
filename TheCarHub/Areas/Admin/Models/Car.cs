@@ -17,7 +17,6 @@ namespace TheCarHub.Areas.Admin.Models
 
 
         public ICollection<CarImage> Images { get; } = new List<CarImage>();
-
         public CarDetails CarDetails { get; set; }
     }
 }
