@@ -16,7 +16,7 @@ namespace TheCarHub.Areas.Admin.Models
         public bool IsAvailable { get; set; }
 
 
-        public ICollection<CarImage> Images { get; } = new List<CarImage>();
+        public virtual ICollection<CarImage> Images { get; set; }
         public CarDetails CarDetails { get; set; }
     }
 }

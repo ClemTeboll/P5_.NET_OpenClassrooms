@@ -9,8 +9,8 @@ namespace TheCarHub.Areas.Admin.Models
         [NotMapped]
         public IFormFile Image { get; set; }
 
-
+        
         public int CarId { get; set; } // required foreign key property
-        public Car Car { get; set; } = null!; // required reference navigation to principal
+        public Car Car { get; set; } // required reference navigation to principal
     }
 }
