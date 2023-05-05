@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Protocol;
+using TheCarHub.Areas.Admin.DTO;
 using TheCarHub.Areas.Admin.Models;
 using TheCarHub.Data;
 
@@ -14,10 +16,13 @@ namespace TheCarHub.Areas.Admin.Controllers
     public class CarsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public CarsController(ApplicationDbContext context)
+
+        public CarsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         // GET: Admin/Cars
@@ -57,14 +62,37 @@ namespace TheCarHub.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,UrlImage,Description,YearDate,Price,IsAvailable,Image")] Car car )
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,YearDate,Price,IsAvailable,Image")] CarDTO carDto)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
+            //{
+            Car car = new Car();
+            string folder = "wwwroot/images/";
+            if (carDto.Image != null)
             {
-                _context.Add(car);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                string extension = Path.GetExtension(carDto.Image.FileName);
+                folder += Guid.NewGuid().ToString() + extension;
+
+                car.Name = carDto.Name;
+                car.Description = carDto.Description;
+                car.YearDate = carDto.YearDate;
+                car.Price = carDto.Price;
+                car.IsAvailable = carDto.IsAvailable;
+
+                await carDto.Image.CopyToAsync(new FileStream(folder, FileMode.Create));
             }
+
+            _context.Add(car);
+
+            CarImage carImage = new CarImage();
+            carImage.UrlImage = folder;
+            carImage.CarId = car.Id;
+            carImage.Car = car;
+            _context.Add(carImage);
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        //}
             return View(car);
         }
 

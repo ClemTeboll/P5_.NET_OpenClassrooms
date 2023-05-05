@@ -7,9 +7,10 @@ namespace TheCarHub.Areas.Admin.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string UrlImage { get; set; }
+        //public string UrlImage { get; set; }
         public string Description { get; set; }
         [NotMapped]
+        [Required]
         public IFormFile Image { get; set; }
         public DateTime YearDate { get; set; }
         public decimal Price { get; set; }

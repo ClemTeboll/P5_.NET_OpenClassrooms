@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.Build.Framework;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TheCarHub.Areas.Admin.Models
 {
@@ -7,6 +8,7 @@ namespace TheCarHub.Areas.Admin.Models
         public int Id { get; set; }
         public string UrlImage { get; set; }
         [NotMapped]
+        [Required]
         public IFormFile Image { get; set; }
 
         
