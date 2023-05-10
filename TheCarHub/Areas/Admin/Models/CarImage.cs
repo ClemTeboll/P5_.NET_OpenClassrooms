@@ -13,6 +13,6 @@ namespace TheCarHub.Areas.Admin.Models
 
         
         public int CarId { get; set; } // required foreign key property
-        public Car Car { get; set; } // required reference navigation to principal
+        public virtual Car Car { get; set; } // required reference navigation to principal
     }
 }

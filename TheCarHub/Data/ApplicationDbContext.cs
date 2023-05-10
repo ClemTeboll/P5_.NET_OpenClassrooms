@@ -10,6 +10,9 @@ namespace TheCarHub.Data
             : base(options)
         {
         }
-        public DbSet<Car> Car { get; set; } = default!;
+        public DbSet<Car> Car { get; set; }
+        public DbSet<CarDetails> CarDetails { get; set; }
+
+        public DbSet<CarImage>CarImages { get; set; }
     }
 }

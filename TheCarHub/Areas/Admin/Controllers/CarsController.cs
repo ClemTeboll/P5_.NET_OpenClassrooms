@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,12 +18,13 @@ namespace TheCarHub.Areas.Admin.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IMapper _mapper;
 
-
-        public CarsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        public CarsController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment, IMapper mapper)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _mapper = mapper;
         }
 
         // GET: Admin/Cars
@@ -64,37 +66,45 @@ namespace TheCarHub.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,YearDate,Price,IsAvailable,Image")] CarDTO carDto)
         {
-            //if (ModelState.IsValid)
-            //{
-            Car car = new Car();
-            string folder = "wwwroot/images/";
-            if (carDto.Image != null)
+            if (ModelState.IsValid)
             {
-                string extension = Path.GetExtension(carDto.Image.FileName);
-                folder += Guid.NewGuid().ToString() + extension;
+                try
+                {
+                    Car car = new Car();
+                    string folder = "wwwroot/images/";
+                    if (carDto.Image != null)
+                    {
+                        string extension = Path.GetExtension(carDto.Image.FileName);
+                        folder += Guid.NewGuid().ToString() + extension;
 
-                car.Name = carDto.Name;
-                car.Description = carDto.Description;
-                car.YearDate = carDto.YearDate;
-                car.Price = carDto.Price;
-                car.IsAvailable = carDto.IsAvailable;
+                        car = _mapper.Map<Car>(carDto);
 
-                await carDto.Image.CopyToAsync(new FileStream(folder, FileMode.Create));
-            }
+                        await carDto.Image.CopyToAsync(new FileStream(folder, FileMode.Create));
+                    }
 
-            _context.Add(car);
+                    _context.Add(car);
+                    await _context.SaveChangesAsync();
 
-            CarImage carImage = new CarImage();
-            carImage.UrlImage = folder;
-            carImage.CarId = car.Id;
-            carImage.Car = car;
-            _context.Add(carImage);
+                    CarImage carImage = new CarImage();
+                    carImage.UrlImage = folder;
+                    carImage.CarId = car.Id;
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        //}
-            return View(car);
+                    _context.Add(carImage);
+
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+
+                    var exe = ex.InnerException.Message;
+                }
+           
+                return RedirectToAction(nameof(Index));
         }
+            return View(
+                //car
+                );
+    }
 
         // GET: Admin/Cars/Edit/5
         public async Task<IActionResult> Edit(int? id)

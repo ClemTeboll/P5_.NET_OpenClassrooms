@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using TheCarHub.Areas.Admin.Helpers;
 using TheCarHub.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +15,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
+
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+
 
 
 builder.Services.Configure<IdentityOptions>(options =>
