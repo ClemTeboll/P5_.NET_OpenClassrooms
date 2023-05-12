@@ -64,7 +64,11 @@ namespace TheCarHub.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,YearDate,Price,IsAvailable,Image")] CarDTO carDto)
+        public async Task<IActionResult> Create(
+            [Bind
+                ("Id,Name,Description,YearDate,Price,IsAvailable,Image,VIN,Year,Make,Model,Trim,PurchaseDate,Purchase,Repairs,RepairsCost,LotDate,SellingPrice,SaleDate")
+            ] CarDTO carDto
+            )
         {
             if (ModelState.IsValid)
             {
@@ -72,6 +76,7 @@ namespace TheCarHub.Areas.Admin.Controllers
                 {
                     Car car = new Car();
                     string folder = "wwwroot/images/";
+
                     if (carDto.Image != null)
                     {
                         string extension = Path.GetExtension(carDto.Image.FileName);
@@ -95,7 +100,6 @@ namespace TheCarHub.Areas.Admin.Controllers
                 }
                 catch (Exception ex)
                 {
-
                     var exe = ex.InnerException.Message;
                 }
            

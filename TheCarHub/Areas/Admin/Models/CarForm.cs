@@ -3,6 +3,6 @@
     public class CarForm
     {
         public Car Car { get; set; }
-        public CarImage CarImage { get; set; }
+        public CarDetails CarDetails { get; set; }
     }
 }
