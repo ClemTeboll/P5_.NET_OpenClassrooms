@@ -9,6 +9,7 @@ namespace TheCarHub.Areas.Admin.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<CarDTO, Car>();
+            CreateMap<CarDTO, CarDetails>();
         }
     }
 }

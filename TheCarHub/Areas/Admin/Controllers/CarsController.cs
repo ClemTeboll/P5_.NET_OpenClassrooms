@@ -96,6 +96,12 @@ namespace TheCarHub.Areas.Admin.Controllers
 
                     _context.Add(carImage);
 
+                    CarDetails carDetails = _mapper.Map<CarDetails>(carDto);
+                    carDetails.CarId = car.Id;
+
+                    _context.Add(carDetails);
+
+
                     await _context.SaveChangesAsync();
                 }
                 catch (Exception ex)
