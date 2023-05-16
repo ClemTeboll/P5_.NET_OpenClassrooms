@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
 using TheCarHub.Areas.Admin.DTO;
 using TheCarHub.Areas.Admin.Models;
 using TheCarHub.Data;
@@ -96,6 +90,7 @@ namespace TheCarHub.Areas.Admin.Controllers
 
                         CarDetails carDetails = _mapper.Map<CarDetails>(carDto);
                         carDetails.CarId = car.Id;
+                        carDetails.SellingPrice = carDetails.Purchase + carDetails.RepairsCost + 500;
                         _context.Add(carDetails);
 
                         await _context.SaveChangesAsync();
