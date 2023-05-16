@@ -82,27 +82,24 @@ namespace TheCarHub.Areas.Admin.Controllers
                         string extension = Path.GetExtension(carDto.Image.FileName);
                         folder += Guid.NewGuid().ToString() + extension;
 
-                        car = _mapper.Map<Car>(carDto);
-
                         await carDto.Image.CopyToAsync(new FileStream(folder, FileMode.Create));
+
+                        car = _mapper.Map<Car>(carDto);
+                        _context.Add(car);
+
+                        await _context.SaveChangesAsync();
+
+                        CarImage carImage = new CarImage();
+                        carImage.UrlImage = folder;
+                        carImage.CarId = car.Id;
+                        _context.Add(carImage);
+
+                        CarDetails carDetails = _mapper.Map<CarDetails>(carDto);
+                        carDetails.CarId = car.Id;
+                        _context.Add(carDetails);
+
+                        await _context.SaveChangesAsync();
                     }
-
-                    _context.Add(car);
-                    await _context.SaveChangesAsync();
-
-                    CarImage carImage = new CarImage();
-                    carImage.UrlImage = folder;
-                    carImage.CarId = car.Id;
-
-                    _context.Add(carImage);
-
-                    CarDetails carDetails = _mapper.Map<CarDetails>(carDto);
-                    carDetails.CarId = car.Id;
-
-                    _context.Add(carDetails);
-
-
-                    await _context.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {

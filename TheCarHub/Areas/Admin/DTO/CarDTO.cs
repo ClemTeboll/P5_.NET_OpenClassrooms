@@ -7,7 +7,7 @@ namespace TheCarHub.Areas.Admin.DTO
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime YearDate { get; set; }
+        public string YearDate { get; set; }
         public decimal Price { get; set; }
         public bool IsAvailable { get; set; }
         [NotMapped]

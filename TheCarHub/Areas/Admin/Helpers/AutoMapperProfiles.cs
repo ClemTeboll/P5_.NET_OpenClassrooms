@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using System.Globalization;
 using TheCarHub.Areas.Admin.DTO;
+using TheCarHub.Areas.Admin.Helpers.Interface;
 using TheCarHub.Areas.Admin.Models;
 
 namespace TheCarHub.Areas.Admin.Helpers
@@ -8,7 +10,13 @@ namespace TheCarHub.Areas.Admin.Helpers
     {
         public AutoMapperProfiles()
         {
-            CreateMap<CarDTO, Car>();
+            CreateMap<CarDTO, Car>()
+                .ForMember(
+                    dest => dest.YearDate, 
+                    opt => opt.MapFrom(
+                        src => DateTime.ParseExact("01/01/" + src.YearDate, "M/d/yyyy", CultureInfo.InvariantCulture)
+                    )
+                 );
             CreateMap<CarDTO, CarDetails>();
         }
     }
