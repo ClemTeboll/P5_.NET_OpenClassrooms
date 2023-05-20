@@ -7,8 +7,6 @@ namespace TheCarHub.Areas.Admin.DTO
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public string YearDate { get; set; }
-        public decimal Price { get; set; }
         public bool IsAvailable { get; set; }
         [NotMapped]
         [Required]
@@ -16,7 +14,7 @@ namespace TheCarHub.Areas.Admin.DTO
         [Required]
         public string VIN { get; set; }
         [Required]
-        public int Year { get; set; }
+        public string Year { get; set; }
         public string Make { get; set; }
         [Required]
         public string Model { get; set; }

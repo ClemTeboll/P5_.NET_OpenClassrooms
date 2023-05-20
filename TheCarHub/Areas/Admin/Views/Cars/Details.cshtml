@@ -1,4 +1,4 @@
-﻿@model TheCarHub.Areas.Admin.Models.Car
+﻿@model TheCarHub.Areas.Admin.DTO.Read.CarDtoRead
 
 @{
     ViewData["Title"] = "Details";
@@ -11,6 +11,12 @@
     <h4>Car</h4>
     <hr />
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.UrlImage)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.UrlImage)
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -24,23 +30,48 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearDate)
+            @Html.DisplayNameFor(model => model.Year)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearDate)
+            @Html.DisplayFor(model => model.Year)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.SellingPrice)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => model.SellingPrice)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsAvailable)
+            @Html.DisplayNameFor(model => model.VIN)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsAvailable)
+            @Html.DisplayFor(model => model.VIN)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Make)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Make)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Model)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Model)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Trim)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Trim)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LotDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LotDate)
+        </dd>
+
     </dl>
 </div>
 <div>

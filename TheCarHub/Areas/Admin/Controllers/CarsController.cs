@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TheCarHub.Areas.Admin.DTO;
+using TheCarHub.Areas.Admin.DTO.Read;
 using TheCarHub.Areas.Admin.Models;
 using TheCarHub.Data;
 
@@ -24,8 +25,18 @@ namespace TheCarHub.Areas.Admin.Controllers
         // GET: Admin/Cars
         public async Task<IActionResult> Index()
         {
+            List<Car> carList = await _context.Car.ToListAsync();
+            List<CarDtoRead> carDtoReadList = new List<CarDtoRead>();
+
+            foreach (Car car in carList)
+            {
+                CarDtoRead newCarDtoRead = _mapper.Map<CarDtoRead>(car);
+                Console.WriteLine(newCarDtoRead);
+                carDtoReadList.Add(newCarDtoRead);
+            }
+
             return _context.Car != null ?
-                        View(await _context.Car.ToListAsync()) :
+                        View(carDtoReadList) :
                         Problem("Entity set 'ApplicationDbContext.Car'  is null.");
         }
 
@@ -50,7 +61,19 @@ namespace TheCarHub.Areas.Admin.Controllers
         // GET: Admin/Cars/Create
         public IActionResult Create()
         {
-            return View();
+            //List<string> carModelList = new List<string>
+            //{
+            //    "Miata",
+            //    "Liberty",
+            //    "Grand Caravan",
+            //    "Explorer",
+            //    "Civic",
+            //    "GTI",
+            //    "Edge",
+            //};
+            return View(
+                //carModelList
+                );
         }
 
         // POST: Admin/Cars/Create
@@ -88,6 +111,8 @@ namespace TheCarHub.Areas.Admin.Controllers
                         carImage.CarId = car.Id;
                         _context.Add(carImage);
 
+                        await _context.SaveChangesAsync();
+
                         CarDetails carDetails = _mapper.Map<CarDetails>(carDto);
                         carDetails.CarId = car.Id;
                         carDetails.SellingPrice = carDetails.Purchase + carDetails.RepairsCost + 500;
@@ -103,9 +128,7 @@ namespace TheCarHub.Areas.Admin.Controllers
            
                 return RedirectToAction(nameof(Index));
         }
-            return View(
-                //car
-                );
+            return View();
     }
 
         // GET: Admin/Cars/Edit/5

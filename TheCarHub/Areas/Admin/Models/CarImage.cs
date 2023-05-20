@@ -7,9 +7,9 @@ namespace TheCarHub.Areas.Admin.Models
     {
         public int Id { get; set; }
         public string UrlImage { get; set; }
-        [NotMapped]
-        [Required]
-        public IFormFile Image { get; set; }
+        //[NotMapped]
+        //[Required]
+        //public IFormFile Image { get; set; }
 
         
         public int CarId { get; set; } // required foreign key property

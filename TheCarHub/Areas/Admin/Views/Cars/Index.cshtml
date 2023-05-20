@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TheCarHub.Areas.Admin.Models.Car>
+﻿@model IEnumerable<TheCarHub.Areas.Admin.DTO.Read.CarDtoRead>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,7 +13,7 @@
 <div>
 @foreach (var item in Model) {
     <figure>
-        @*<img src="@Html.DisplayFor(modelItem => item.UrlImage)" />*@
+        <img src="@Html.DisplayFor(modelItem => item.UrlImage)" />
             <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
             <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
             <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
@@ -22,16 +22,13 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </p>
             <p>
-                @Html.DisplayFor(modelItem => item.YearDate)
+                @Html.DisplayFor(modelItem => item.Year)
             </p>
             <p>
                @Html.DisplayFor(modelItem => item.Description)
             </p>
             <p>
-                @Html.DisplayFor(modelItem => item.IsAvailable)
-            </p>
-            <p>
-                @Html.DisplayFor(modelItem => item.Price)
+                @Html.DisplayFor(modelItem => item.SellingPrice)
             </p>
         </figcaption>
     </figure>

@@ -1,4 +1,4 @@
-﻿@model TheCarHub.Areas.Admin.Models.Car
+﻿@model TheCarHub.Areas.Admin.DTO.Read.CarDtoRead
 
 @{
     ViewData["Title"] = "Delete";
@@ -25,22 +25,16 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.YearDate)
+            @Html.DisplayNameFor(model => model.Year)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.YearDate)
+            @Html.DisplayFor(model => model.Year)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.SellingPrice)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsAvailable)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsAvailable)
+            @Html.DisplayFor(model => model.SellingPrice)
         </dd>
     </dl>
     

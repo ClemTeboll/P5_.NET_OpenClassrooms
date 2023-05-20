@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheCarHub.Data;
 
@@ -11,9 +12,11 @@ using TheCarHub.Data;
 namespace TheCarHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230516144300_ModifyLinkBetweenCarAndCarImage")]
+    partial class ModifyLinkBetweenCarAndCarImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,6 +246,9 @@ namespace TheCarHub.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("YearDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Car");
@@ -297,8 +303,8 @@ namespace TheCarHub.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Year")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -325,7 +331,8 @@ namespace TheCarHub.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarId");
+                    b.HasIndex("CarId")
+                        .IsUnique();
 
                     b.ToTable("CarImages");
                 });
@@ -395,8 +402,8 @@ namespace TheCarHub.Data.Migrations
             modelBuilder.Entity("TheCarHub.Areas.Admin.Models.CarImage", b =>
                 {
                     b.HasOne("TheCarHub.Areas.Admin.Models.Car", "Car")
-                        .WithMany("CarImages")
-                        .HasForeignKey("CarId")
+                        .WithOne("CarImage")
+                        .HasForeignKey("TheCarHub.Areas.Admin.Models.CarImage", "CarId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -408,7 +415,8 @@ namespace TheCarHub.Data.Migrations
                     b.Navigation("CarDetails")
                         .IsRequired();
 
-                    b.Navigation("CarImages");
+                    b.Navigation("CarImage")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

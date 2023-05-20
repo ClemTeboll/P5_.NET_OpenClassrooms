@@ -9,15 +9,13 @@ namespace TheCarHub.Areas.Admin.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
-        [NotMapped]
-        [Required]
-        public IFormFile Image { get; set; }
-        public DateTime YearDate { get; set; }
-        public decimal Price { get; set; }
+        //[NotMapped]
+        //[Required]
+        //public IFormFile Image { get; set; }
         public bool IsAvailable { get; set; }
 
 
-        public virtual ICollection<CarImage> Images { get; set; }
+        public ICollection<CarImage> CarImages { get; set; }
         public CarDetails CarDetails { get; set; }
     }
 }
