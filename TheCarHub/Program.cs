@@ -18,8 +18,6 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 
-
-
 builder.Services.Configure<IdentityOptions>(options =>
 {
     // Password settings.
