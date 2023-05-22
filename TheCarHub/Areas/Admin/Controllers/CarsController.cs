@@ -26,11 +26,17 @@ namespace TheCarHub.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             List<Car> carList = await _context.Car.ToListAsync();
+            List<CarImage> carImageList = await _context.CarImages.ToListAsync();
+            List<CarDetails> carDetailsList = await _context.CarDetails.ToListAsync();
             List<CarDtoRead> carDtoReadList = new List<CarDtoRead>();
 
             foreach (Car car in carList)
             {
-                CarDtoRead newCarDtoRead = _mapper.Map<CarDtoRead>(car);
+                CarImage carImage = carImageList.Where(ci => ci.CarId == car.Id).First();
+                CarDetails carDetails = carDetailsList.Where(cd => cd.CarId == car.Id).First();
+                var carObject = (car, carImage, carDetails);
+
+                CarDtoRead newCarDtoRead = _mapper.Map<CarDtoRead>(carObject);
                 Console.WriteLine(newCarDtoRead);
                 carDtoReadList.Add(newCarDtoRead);
             }
