@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.UrlImage)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UrlImage)
+            <img src="@Url.Content(@Model.UrlImage.Replace("wwwroot", "~"))" alt="@Model.Name" />
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
