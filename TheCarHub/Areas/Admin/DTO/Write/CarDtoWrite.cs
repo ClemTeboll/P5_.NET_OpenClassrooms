@@ -10,8 +10,9 @@ namespace TheCarHub.Areas.Admin.DTO.Write
         public string Description { get; set; }
         public bool IsAvailable { get; set; }
         [NotMapped]
-        [Required]
+        //[Required]
         public IFormFile Image { get; set; }
+
         [Required]
         public string VIN { get; set; }
         [Required]
