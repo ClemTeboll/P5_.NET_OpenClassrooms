@@ -5,8 +5,6 @@ using TheCarHub.Areas.Admin.DTO.Write;
 using TheCarHub.Areas.Admin.DTO.Read;
 using TheCarHub.Areas.Admin.Models;
 using TheCarHub.Data;
-using Microsoft.VisualBasic;
-using static NuGet.Packaging.PackagingConstants;
 
 namespace TheCarHub.Areas.Admin.Controllers
 {
@@ -52,18 +50,19 @@ namespace TheCarHub.Areas.Admin.Controllers
             }
 
             var car = await _context.Car
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .Where(c=>c.Id ==id).Include(x=>x.CarDetails).Include(y=>y.CarImages).FirstOrDefaultAsync();
+                
             if (car == null)
             {
                 return NotFound();
             }
 
-            List<CarImage> carImageList = await _context.CarImages.ToListAsync();
-            List<CarDetails> carDetailsList = await _context.CarDetails.ToListAsync();
-            List<CarDtoRead> carDtoReadList = new List<CarDtoRead>();
+            //CarImage carImageList = await _context.CarImages.FirstOrDefaultAsync(ci => ci.CarId == id);
+            //CarDetails carDetailsList = await _context.CarDetails.FirstOrDefaultAsync(cd => cd.CarId == id);
+            //List<CarDtoRead> carDtoReadList = new List<CarDtoRead>();
 
-            var carObject = GetDataForCarMapping(car);
-            CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(carObject);
+            //var carObject = GetDataForCarMapping(car);
+            CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(car);
 
             return View(carDtoRead);
         }
@@ -166,9 +165,12 @@ namespace TheCarHub.Areas.Admin.Controllers
             ] CarDtoWrite carDtoWrite
         )
         {
-            Car car = GetCar(carDtoWrite.Id);
-            CarImage carImage = GetCarImage(car);
-            CarDetails carDetails = GetCarDetails(car);
+            Car car = _context.Car
+                .Where(x => x.Id == id)
+                .Include(y => y.CarImages)
+                .Include(z => z.CarDetails)
+                .AsNoTracking()
+                .FirstOrDefault();
 
             if (id != carDtoWrite.Id)
             {
@@ -179,19 +181,18 @@ namespace TheCarHub.Areas.Admin.Controllers
             {
                 try
                 {
-                    car = _mapper.Map<Car>(carDtoWrite);
-                    _context.Update(car);
+                    car = _mapper.Map<CarDtoWrite, Car>(carDtoWrite, car);
 
                     if (carDtoWrite.Image != null)
                     {
                         string folder = configureUrlImage(carDtoWrite);
                         await carDtoWrite.Image.CopyToAsync(new FileStream(folder, FileMode.Create));
-                        carImage.UrlImage = folder;
-                        _context.Update(carImage);
+                        car.CarImages.Where(x => x.CarId == id).FirstOrDefault().UrlImage = folder;
                     }
 
-                    carDetails = _mapper.Map<CarDetails>(carDtoWrite);
-                    _context.Update(carDetails);
+                    car.CarDetails = _mapper.Map(carDtoWrite, car.CarDetails);
+
+                    _context.Update(car);
 
                     await _context.SaveChangesAsync();
                 }
@@ -226,7 +227,10 @@ namespace TheCarHub.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            return View(car);
+            var carObject = GetDataForCarMapping(car);
+            CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(carObject);
+
+            return View(carDtoRead);
         }
 
         // POST: Admin/Cars/Delete/5
