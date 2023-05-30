@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+//using TheCarHub.Areas.Admin.DTO.Read.CarDtoRead;
 
 namespace TheCarHub.Pages
 {
@@ -14,7 +15,7 @@ namespace TheCarHub.Pages
 
         public void OnGet()
         {
-        
+            
         }
     }
 }

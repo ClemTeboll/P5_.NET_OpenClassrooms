@@ -13,12 +13,17 @@ namespace TheCarHub.Areas.Admin.Helpers
             CreateMap<CarDtoWrite, Car>();
 
             CreateMap<CarDtoWrite, CarDetails>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(
                     dest => dest.Year,
                     opt => opt.MapFrom(
                         src => DateTime.ParseExact("01/01/" + src.Year, "M/d/yyyy", CultureInfo.InvariantCulture)
                     )
-                 );
+                 )
+                .ForMember(
+                    dest => dest.SellingPrice,
+                    opt => opt.MapFrom(src => src.Purchase + src.RepairsCost + 500)
+                );
 
             CreateMap<(Car, CarImage, CarDetails), CarDtoRead>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Item1.Id))

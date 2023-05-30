@@ -119,7 +119,6 @@ namespace TheCarHub.Areas.Admin.Controllers
 
                         CarDetails carDetails = _mapper.Map<CarDetails>(carDtoWrite);
                         carDetails.CarId = car.Id;
-                        carDetails.SellingPrice = carDetails.Purchase + carDetails.RepairsCost + 500;
                         _context.Add(carDetails);
                         await _context.SaveChangesAsync();
                     }
@@ -165,12 +164,12 @@ namespace TheCarHub.Areas.Admin.Controllers
             ] CarDtoWrite carDtoWrite
         )
         {
-            Car car = _context.Car
+            Car car = await _context.Car
                 .Where(x => x.Id == id)
                 .Include(y => y.CarImages)
                 .Include(z => z.CarDetails)
                 .AsNoTracking()
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
             if (id != carDtoWrite.Id)
             {
@@ -193,7 +192,6 @@ namespace TheCarHub.Areas.Admin.Controllers
                     car.CarDetails = _mapper.Map(carDtoWrite, car.CarDetails);
 
                     _context.Update(car);
-
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
