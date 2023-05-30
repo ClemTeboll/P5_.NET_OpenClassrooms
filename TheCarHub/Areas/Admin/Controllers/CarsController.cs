@@ -25,12 +25,18 @@ namespace TheCarHub.Areas.Admin.Controllers
         // GET: Admin/Cars
         public async Task<IActionResult> Index()
         {
-            List<Car> carList = await _context.Car.ToListAsync();
             List<CarDtoRead> carDtoReadList = new List<CarDtoRead>();
 
-            foreach (Car car in carList)
+            foreach (Car item in _context.Car)
             {
-                var carObject = GetDataForCarMapping(car);
+                Car car = await _context.Car
+                    .Where(x => x.Id == item.Id)
+                    .Include(y => y.CarImages)
+                    .Include(z => z.CarDetails)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
+
+                var carObject = (car, car.CarImages.First(), car.CarDetails);
                 CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(carObject);
 
                 carDtoReadList.Add(carDtoRead);
@@ -141,13 +147,19 @@ namespace TheCarHub.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var car = await _context.Car.FindAsync(id);
+            var car = await _context.Car
+                .Where(x => x.Id == id)
+                .Include(y => y.CarImages)
+                .Include(z => z.CarDetails)
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
             if (car == null)
             {
                 return NotFound();
             }
 
-            var carObject = GetDataForCarMapping(car);
+            var carObject = (car, car.CarImages, car.CarDetails);
+
             CarDtoWrite carDtoWrite = _mapper.Map<CarDtoWrite>(carObject);
 
             return View(carDtoWrite);
@@ -219,13 +231,17 @@ namespace TheCarHub.Areas.Admin.Controllers
             }
 
             var car = await _context.Car
+                .Where(x => x.Id == id)
+                .Include(y => y.CarImages)
+                .Include(z => z.CarDetails)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (car == null)
             {
                 return NotFound();
             }
 
-            var carObject = GetDataForCarMapping(car);
+            var carObject = (car, car.CarImages, car.CarDetails);
             CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(carObject);
 
             return View(carDtoRead);
@@ -253,33 +269,6 @@ namespace TheCarHub.Areas.Admin.Controllers
         private bool CarExists(int id)
         {
             return (_context.Car?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
-
-        public Car GetCar(int id)
-        {
-            List<Car> carList = _context.Car.ToList();
-            return carList.Where(c => c.Id == id).First();
-        }
-
-        public CarImage GetCarImage(Car car)
-        {
-            List<CarImage> carImageList = _context.CarImages.ToList();
-            return carImageList.Where(ci => ci.CarId == car.Id).First();
-        }
-
-        public CarDetails GetCarDetails(Car car)
-        {
-            List<CarDetails> carDetailsList = _context.CarDetails.ToList();
-            CarDetails carDetails = carDetailsList.Where(ci => ci.CarId == car.Id).First();
-            return carDetails;
-        }
-
-        public dynamic GetDataForCarMapping(Car car)
-        {
-            CarImage carImage = GetCarImage(car);
-            CarDetails carDetails = GetCarDetails(car);
-            var carObject = (car, carImage, carDetails);
-            return carObject;
         }
 
         public string configureUrlImage(CarDtoWrite carDtoWrite)
