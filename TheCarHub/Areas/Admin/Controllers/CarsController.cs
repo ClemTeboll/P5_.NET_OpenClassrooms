@@ -56,19 +56,18 @@ namespace TheCarHub.Areas.Admin.Controllers
             }
 
             var car = await _context.Car
-                .Where(c=>c.Id ==id).Include(x=>x.CarDetails).Include(y=>y.CarImages).FirstOrDefaultAsync();
+                .Where(c => c.Id == id)
+                .Include(x => x.CarDetails)
+                .Include(y => y.CarImages)
+                .FirstOrDefaultAsync();
                 
             if (car == null)
             {
                 return NotFound();
             }
 
-            //CarImage carImageList = await _context.CarImages.FirstOrDefaultAsync(ci => ci.CarId == id);
-            //CarDetails carDetailsList = await _context.CarDetails.FirstOrDefaultAsync(cd => cd.CarId == id);
-            //List<CarDtoRead> carDtoReadList = new List<CarDtoRead>();
-
-            //var carObject = GetDataForCarMapping(car);
-            CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(car);
+            var carObject = (car, car.CarImages.First(), car.CarDetails);
+            CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(carObject);
 
             return View(carDtoRead);
         }
