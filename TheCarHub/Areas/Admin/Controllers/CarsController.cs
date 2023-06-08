@@ -33,6 +33,7 @@ namespace TheCarHub.Areas.Admin.Controllers
                     .Where(x => x.Id == item.Id)
                     .Include(y => y.CarImages)
                     .Include(z => z.CarDetails)
+                    .Include(z => z.CarDetails.CarModel)
                     .AsNoTracking()
                     .FirstOrDefaultAsync();
 
@@ -58,6 +59,7 @@ namespace TheCarHub.Areas.Admin.Controllers
             var car = await _context.Car
                 .Where(c => c.Id == id)
                 .Include(x => x.CarDetails)
+                .Include(x => x.CarDetails.CarModel)
                 .Include(y => y.CarImages)
                 .FirstOrDefaultAsync();
                 
@@ -75,19 +77,13 @@ namespace TheCarHub.Areas.Admin.Controllers
         // GET: Admin/Cars/Create
         public IActionResult Create()
         {
-            //List<string> carModelList = new List<string>
-            //{
-            //    "Miata",
-            //    "Liberty",
-            //    "Grand Caravan",
-            //    "Explorer",
-            //    "Civic",
-            //    "GTI",
-            //    "Edge",
-            //};
-            return View(
-                //carModelList
-                );
+            List<CarMakes> carMakesList = _context.CarMakes.ToList();
+            List<CarModel> carModelList = _context.CarModel.ToList();
+
+            ViewBag.CarMakesList = carMakesList;
+            ViewBag.CarModelList = carModelList;
+
+            return View();
         }
 
         // POST: Admin/Cars/Create
@@ -97,7 +93,7 @@ namespace TheCarHub.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             [Bind
-                ("Id,Name,Description,IsAvailable,Image,VIN,Year,Make,Model,Trim,PurchaseDate,Purchase,Repairs,RepairsCost,LotDate,SellingPrice,SaleDate")
+                ("Id,Name,Description,IsAvailable,Image,VIN,Year,Make,CarModelId,Trim,PurchaseDate,Purchase,Repairs,RepairsCost,LotDate,SellingPrice,SaleDate")
             ] CarDtoWrite carDtoWrite
             )
         {
@@ -150,6 +146,7 @@ namespace TheCarHub.Areas.Admin.Controllers
                 .Where(x => x.Id == id)
                 .Include(y => y.CarImages)
                 .Include(z => z.CarDetails)
+                .Include(z => z.CarDetails.CarModel)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
             if (car == null)
@@ -179,6 +176,7 @@ namespace TheCarHub.Areas.Admin.Controllers
                 .Where(x => x.Id == id)
                 .Include(y => y.CarImages)
                 .Include(z => z.CarDetails)
+                .Include(z => z.CarDetails.CarModel)
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
 

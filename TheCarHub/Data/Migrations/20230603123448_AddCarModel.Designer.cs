@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TheCarHub.Data;
 
@@ -11,13 +12,15 @@ using TheCarHub.Data;
 namespace TheCarHub.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230603123448_AddCarModel")]
+    partial class AddCarModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -259,14 +262,15 @@ namespace TheCarHub.Data.Migrations
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CarMakesId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CarModelId")
+                    b.Property<int>("CarModelId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("LotDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Make")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Purchase")
                         .HasColumnType("decimal(18,2)");
@@ -303,8 +307,6 @@ namespace TheCarHub.Data.Migrations
                     b.HasIndex("CarId")
                         .IsUnique();
 
-                    b.HasIndex("CarMakesId");
-
                     b.HasIndex("CarModelId");
 
                     b.ToTable("CarDetails");
@@ -330,23 +332,6 @@ namespace TheCarHub.Data.Migrations
                     b.HasIndex("CarId");
 
                     b.ToTable("CarImages");
-                });
-
-            modelBuilder.Entity("TheCarHub.Areas.Admin.Models.CarMakes", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("CarMakes");
                 });
 
             modelBuilder.Entity("TheCarHub.Areas.Admin.Models.CarModel", b =>
@@ -425,17 +410,13 @@ namespace TheCarHub.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TheCarHub.Areas.Admin.Models.CarMakes", "CarMakes")
-                        .WithMany()
-                        .HasForeignKey("CarMakesId");
-
                     b.HasOne("TheCarHub.Areas.Admin.Models.CarModel", "CarModel")
                         .WithMany()
-                        .HasForeignKey("CarModelId");
+                        .HasForeignKey("CarModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Car");
-
-                    b.Navigation("CarMakes");
 
                     b.Navigation("CarModel");
                 });

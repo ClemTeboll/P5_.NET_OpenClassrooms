@@ -14,5 +14,9 @@ namespace TheCarHub.Data
         public DbSet<CarDetails> CarDetails { get; set; }
 
         public DbSet<CarImage>CarImages { get; set; }
+
+        public DbSet<TheCarHub.Areas.Admin.Models.CarModel> CarModel { get; set; } = default!;
+
+        public DbSet<TheCarHub.Areas.Admin.Models.CarMakes> CarMakes { get; set; } = default!;
     }
 }

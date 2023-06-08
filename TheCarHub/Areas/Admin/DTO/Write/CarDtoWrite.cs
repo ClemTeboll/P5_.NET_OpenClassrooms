@@ -10,8 +10,8 @@ namespace TheCarHub.Areas.Admin.DTO.Write
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsAvailable { get; set; }
+        //public string UrlImage { get; set; }
         [NotMapped]
-        //[Required]
         public IFormFile Image { get; set; }
 
         [Required]
@@ -19,8 +19,6 @@ namespace TheCarHub.Areas.Admin.DTO.Write
         [Required]
         public string Year { get; set; }
         public string Make { get; set; }
-        [Required]
-        public string Model { get; set; }
         [Required]
         public string Trim { get; set; }
         [Required]
@@ -33,5 +31,9 @@ namespace TheCarHub.Areas.Admin.DTO.Write
         public DateTime LotDate { get; set; }
         public decimal SellingPrice { get; set; }
         public DateTime SaleDate { get; set; }
+        [Required]
+        public int CarModelId { get; set; }
+        [Required]
+        public int CarMakesId { get; set; }
     }
 }

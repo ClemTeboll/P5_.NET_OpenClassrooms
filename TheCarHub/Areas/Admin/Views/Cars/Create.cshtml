@@ -1,4 +1,5 @@
-﻿@model TheCarHub.Areas.Admin.DTO.Write.CarDtoWrite
+﻿@using TheCarHub.Areas.Admin.Models
+@model TheCarHub.Areas.Admin.DTO.Write.CarDtoWrite
 
 @{
     ViewData["Title"] = "Create";
@@ -52,28 +53,26 @@
                 <span asp-validation-for="VIN" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Make" class="control-label"></label>
-                <input asp-for="Make" class="form-control" />
-                <span asp-validation-for="Make" class="text-danger"></span>
+                <label asp-for="CarMakesId" class="control-label"></label>
+                <select asp-for="CarMakesId" class="form-control">
+                    <option value="">--- Choose a make ---</option>
+                    @foreach (var carMakes in ViewBag.CarMakesList as List<CarMakes>)
+                    {
+                        <option value="@carMakes.Id">@carMakes.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="CarMakesId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <select asp-for="Model" class="form-control">
+                <label asp-for="CarModelId" class="control-label"></label>
+                <select asp-for="CarModelId" class="form-control">
                     <option value="">--- Choose a model ---</option>
-                    <option value="Miata">Miata</option>
-                    <option value="Liberty">Liberty</option>
-                    <option value="Grand Caravan">Grand Caravan</option>
-                    <option value="Explorer">Explorer</option>
-                    <option value="Civic">Civic</option>
-                    <option value="GTI">GTI</option>
-                    <option value="Edge">Edge</option>
-
-                    @*@foreach (var i in Model.Model)
+                    @foreach (var carModel in ViewBag.CarModelList as List<CarModel>)
                     {
-                        <option value="@i">@i</option>
-                    }*@
+                        <option value="@carModel.Id">@carModel.Name</option>
+                    }
                 </select>
-                <span asp-validation-for="Model" class="text-danger"></span>
+                <span asp-validation-for="CarModelId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Trim" class="control-label"></label>
