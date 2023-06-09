@@ -32,8 +32,9 @@ namespace TheCarHub.Areas.Admin.DTO.Write
         public decimal SellingPrice { get; set; }
         public DateTime SaleDate { get; set; }
         [Required]
-        public int CarModelId { get; set; }
-        [Required]
         public int CarMakesId { get; set; }
+        [Required]
+        public int CarModelId { get; set; }
+        
     }
 }

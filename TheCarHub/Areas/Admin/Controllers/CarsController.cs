@@ -93,7 +93,7 @@ namespace TheCarHub.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
             [Bind
-                ("Id,Name,Description,IsAvailable,Image,VIN,Year,Make,CarModelId,Trim,PurchaseDate,Purchase,Repairs,RepairsCost,LotDate,SellingPrice,SaleDate")
+                ("Id,Name,Description,IsAvailable,Image,VIN,Year,CarMakesId,CarModelId,Trim,PurchaseDate,Purchase,Repairs,RepairsCost,LotDate,SellingPrice,SaleDate")
             ] CarDtoWrite carDtoWrite
             )
         {

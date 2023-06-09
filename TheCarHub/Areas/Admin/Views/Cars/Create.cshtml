@@ -53,10 +53,12 @@
                 <span asp-validation-for="VIN" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CarMakesId" class="control-label"></label>
+                <label asp-for="CarMakesId" class="control-label">Make</label>
                 <select asp-for="CarMakesId" class="form-control">
                     <option value="">--- Choose a make ---</option>
-                    @foreach (var carMakes in ViewBag.CarMakesList as List<CarMakes>)
+                    @foreach (CarMakes carMakes in ViewBag.CarMakesList 
+                    @*as List<CarMakes>*@
+                        )
                     {
                         <option value="@carMakes.Id">@carMakes.Name</option>
                     }
@@ -64,10 +66,10 @@
                 <span asp-validation-for="CarMakesId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CarModelId" class="control-label"></label>
+                <label asp-for="CarModelId" class="control-label">Model</label>
                 <select asp-for="CarModelId" class="form-control">
                     <option value="">--- Choose a model ---</option>
-                    @foreach (var carModel in ViewBag.CarModelList as List<CarModel>)
+                    @foreach (CarModel carModel in ViewBag.CarModelList as List<CarModel>)
                     {
                         <option value="@carModel.Id">@carModel.Name</option>
                     }
