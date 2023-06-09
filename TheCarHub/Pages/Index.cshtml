@@ -1,10 +1,31 @@
 ﻿@page
-@model TheCarHub.Areas.Admin.DTO.Read.CarDtoRead
+@model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    @foreach (var item in Model._carDtoReadList)
+    {
+        <figure>
+            <a asp-action="Details" asp-route-id="@item.Id">
+                <img src="@Url.Content(item.UrlImage.Replace("wwwroot", "~"))" alt="@item.Name" />
+                <figcaption>
+                    <p>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </p>
+                    <p>
+                        @Html.DisplayFor(modelItem => item.Year)
+                    </p>
+                    <p>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </p>
+                    <p>
+                        @Html.DisplayFor(modelItem => item.SellingPrice)
+                    </p>
+                </figcaption>
+            </a>
+        </figure>
+    }
 </div>
