@@ -9,7 +9,7 @@
     @foreach (var item in Model._carDtoReadList)
     {
         <figure>
-            <a asp-action="Details" asp-route-id="@item.Id">
+            <a asp-area="ProductDetails" asp-controller="ProductDetails" asp-action="Details" asp-route-id="@item.Id">
                 <img src="@Url.Content(item.UrlImage.Replace("wwwroot", "~"))" alt="@item.Name" />
                 <figcaption>
                     <p>

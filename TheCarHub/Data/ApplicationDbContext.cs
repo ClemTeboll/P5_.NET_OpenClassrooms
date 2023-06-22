@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TheCarHub.Areas.Admin.Models;
+using TheCarHub.Areas.Admin.DTO.Read;
 
 namespace TheCarHub.Data
 {
@@ -18,5 +19,7 @@ namespace TheCarHub.Data
         public DbSet<TheCarHub.Areas.Admin.Models.CarModel> CarModel { get; set; } = default!;
 
         public DbSet<TheCarHub.Areas.Admin.Models.CarMakes> CarMakes { get; set; } = default!;
+
+        public DbSet<TheCarHub.Areas.Admin.DTO.Read.CarDtoRead> CarDtoRead { get; set; } = default!;
     }
 }

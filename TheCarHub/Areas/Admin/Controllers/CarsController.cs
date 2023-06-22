@@ -59,6 +59,7 @@ namespace TheCarHub.Areas.Admin.Controllers
             var car = await _context.Car
                 .Where(c => c.Id == id)
                 .Include(x => x.CarDetails)
+                .Include(x => x.CarDetails.CarMakes)
                 .Include(x => x.CarDetails.CarModel)
                 .Include(y => y.CarImages)
                 .FirstOrDefaultAsync();
@@ -72,16 +73,14 @@ namespace TheCarHub.Areas.Admin.Controllers
             CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(carObject);
 
             return View(carDtoRead);
+
+            //return RedirectToAction("", "", new { area = "" });
         }
 
         // GET: Admin/Cars/Create
         public IActionResult Create()
         {
-            List<CarMakes> carMakesList = _context.CarMakes.ToList();
-            List<CarModel> carModelList = _context.CarModel.ToList();
-
-            ViewBag.CarMakesList = carMakesList;
-            ViewBag.CarModelList = carModelList;
+            GetMakesAndModelList();
 
             return View();
         }
@@ -94,7 +93,7 @@ namespace TheCarHub.Areas.Admin.Controllers
         public async Task<IActionResult> Create(
             [Bind
                 ("Id,Name,Description,IsAvailable,Image,VIN,Year,CarMakesId,CarModelId,Trim,PurchaseDate,Purchase,Repairs,RepairsCost,LotDate,SellingPrice,SaleDate")
-            ] CarDtoWrite carDtoWrite
+            ] CarDtoWriteCreate carDtoWriteCreate
             )
         {
             if (ModelState.IsValid)
@@ -103,12 +102,12 @@ namespace TheCarHub.Areas.Admin.Controllers
                 {
                     Car car = new Car();
 
-                    if (carDtoWrite.Image != null)
+                    if (carDtoWriteCreate.Image != null)
                     {
-                        string folder = configureUrlImage(carDtoWrite);
-                        await carDtoWrite.Image.CopyToAsync(new FileStream(folder, FileMode.Create));
+                        string folder = ConfigureUrlImage(carDtoWriteCreate.Image.FileName);
+                        await carDtoWriteCreate.Image.CopyToAsync(new FileStream(folder, FileMode.Create));
 
-                        car = _mapper.Map<Car>(carDtoWrite);
+                        car = _mapper.Map<Car>(carDtoWriteCreate);
                         _context.Add(car);
                         await _context.SaveChangesAsync();
 
@@ -118,7 +117,11 @@ namespace TheCarHub.Areas.Admin.Controllers
                         _context.Add(carImage);
                         await _context.SaveChangesAsync();
 
-                        CarDetails carDetails = _mapper.Map<CarDetails>(carDtoWrite);
+                        CarMakes carMake = _context.CarMakes.First(cma => cma.Id == carDtoWriteCreate.CarMakesId);
+                        CarModel carModel = _context.CarModel.First(cmo => cmo.Id == carDtoWriteCreate.CarModelId);
+                        var carObject = (carDtoWriteCreate, carMake, carModel);
+
+                        CarDetails carDetails = _mapper.Map<CarDetails>(carObject);
                         carDetails.CarId = car.Id;
                         _context.Add(carDetails);
                         await _context.SaveChangesAsync();
@@ -137,6 +140,8 @@ namespace TheCarHub.Areas.Admin.Controllers
         // GET: Admin/Cars/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            GetMakesAndModelList();
+
             if (id == null || _context.Car == null)
             {
                 return NotFound();
@@ -154,11 +159,12 @@ namespace TheCarHub.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var carObject = (car, car.CarImages, car.CarDetails);
+            var carObject = (car, car.CarImages.First(), car.CarDetails);
 
-            CarDtoWrite carDtoWrite = _mapper.Map<CarDtoWrite>(carObject);
+            CarDtoWriteEdit carDtoWriteEdit = _mapper.Map<CarDtoWriteEdit>(carObject);
+            carDtoWriteEdit.LotDate.ToString("dd/MM/yyyy");
 
-            return View(carDtoWrite);
+            return View(carDtoWriteEdit);
         }
 
         // POST: Admin/Cars/Edit/5
@@ -168,8 +174,8 @@ namespace TheCarHub.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id,
             [Bind
-                ("Id,Name,Description,IsAvailable,Image,VIN,Year,Make,Model,Trim,PurchaseDate,Purchase,Repairs,RepairsCost,LotDate,SellingPrice,SaleDate")
-            ] CarDtoWrite carDtoWrite
+                ("Id,Name,Description,IsAvailable,UrlImage,Image,VIN,Year,CarMakesId,CarModelId,Trim,PurchaseDate,Purchase,Repairs,RepairsCost,LotDate,SellingPrice,SaleDate")
+            ] CarDtoWriteEdit carDtoWriteEdit
         )
         {
             Car car = await _context.Car
@@ -180,7 +186,7 @@ namespace TheCarHub.Areas.Admin.Controllers
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
 
-            if (id != carDtoWrite.Id)
+            if (id != carDtoWriteEdit.Id)
             {
                 return NotFound();
             }
@@ -189,23 +195,30 @@ namespace TheCarHub.Areas.Admin.Controllers
             {
                 try
                 {
-                    car = _mapper.Map<CarDtoWrite, Car>(carDtoWrite, car);
+                    car = _mapper.Map<CarDtoWriteEdit, Car>(carDtoWriteEdit, car);
+                    _context.Update(car);
+                    await _context.SaveChangesAsync();
 
-                    if (carDtoWrite.Image != null)
+                    if (carDtoWriteEdit.Image != null)
                     {
-                        string folder = configureUrlImage(carDtoWrite);
-                        await carDtoWrite.Image.CopyToAsync(new FileStream(folder, FileMode.Create));
+                        string folder = ConfigureUrlImage(carDtoWriteEdit.Image.FileName);
+                        await carDtoWriteEdit.Image.CopyToAsync(new FileStream(folder, FileMode.Create));
                         car.CarImages.Where(x => x.CarId == id).FirstOrDefault().UrlImage = folder;
+
+                        _context.Update(car);
+                        await _context.SaveChangesAsync();
                     }
 
-                    car.CarDetails = _mapper.Map(carDtoWrite, car.CarDetails);
+                    car.CarDetails = _mapper.Map(carDtoWriteEdit, car.CarDetails);
+                    car.CarDetails.CarMakes = _context.CarMakes.First(cma => cma.Id == carDtoWriteEdit.CarMakesId);
+                    car.CarDetails.CarModel = _context.CarModel.First(cmo => cmo.Id == carDtoWriteEdit.CarModelId);
 
-                    _context.Update(car);
+                    _context.Update(car.CarDetails);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CarExists(carDtoWrite.Id))
+                    if (!CarExists(carDtoWriteEdit.Id))
                     {
                         return NotFound();
                     }
@@ -216,7 +229,7 @@ namespace TheCarHub.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(carDtoWrite);
+            return View(carDtoWriteEdit);
         }
 
         // GET: Admin/Cars/Delete/5
@@ -231,6 +244,8 @@ namespace TheCarHub.Areas.Admin.Controllers
                 .Where(x => x.Id == id)
                 .Include(y => y.CarImages)
                 .Include(z => z.CarDetails)
+                .Include(z => z.CarDetails.CarMakes)
+                .Include(z => z.CarDetails.CarModel)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (car == null)
@@ -238,7 +253,7 @@ namespace TheCarHub.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var carObject = (car, car.CarImages, car.CarDetails);
+            var carObject = (car, car.CarImages.First(), car.CarDetails);
             CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(carObject);
 
             return View(carDtoRead);
@@ -268,14 +283,22 @@ namespace TheCarHub.Areas.Admin.Controllers
             return (_context.Car?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        public string configureUrlImage(CarDtoWrite carDtoWrite)
+        public string ConfigureUrlImage(string FileName)
         {
             string folder = "wwwroot/images/";
-            string extension = Path.GetExtension(carDtoWrite.Image.FileName);
+            string extension = Path.GetExtension(FileName);
             folder += Guid.NewGuid().ToString() + extension;
 
             return folder;
         }
-        
+
+        public void GetMakesAndModelList()
+        {
+            List<CarMakes> carMakesList = _context.CarMakes.ToList();
+            List<CarModel> carModelList = _context.CarModel.ToList();
+
+            ViewBag.CarMakesList = carMakesList;
+            ViewBag.CarModelList = carModelList;
+        }
     }
 }

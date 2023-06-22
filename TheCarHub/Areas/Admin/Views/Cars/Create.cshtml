@@ -1,5 +1,5 @@
 ﻿@using TheCarHub.Areas.Admin.Models
-@model TheCarHub.Areas.Admin.DTO.Write.CarDtoWrite
+@model TheCarHub.Areas.Admin.DTO.Write.CarDtoWriteCreate
 
 @{
     ViewData["Title"] = "Create";
@@ -56,9 +56,7 @@
                 <label asp-for="CarMakesId" class="control-label">Make</label>
                 <select asp-for="CarMakesId" class="form-control">
                     <option value="">--- Choose a make ---</option>
-                    @foreach (CarMakes carMakes in ViewBag.CarMakesList 
-                    @*as List<CarMakes>*@
-                        )
+                    @foreach (CarMakes carMakes in ViewBag.CarMakesList as List<CarMakes>)
                     {
                         <option value="@carMakes.Id">@carMakes.Name</option>
                     }

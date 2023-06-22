@@ -4,21 +4,20 @@ using TheCarHub.Areas.Admin.Models;
 
 namespace TheCarHub.Areas.Admin.DTO.Write
 {
-    public class CarDtoWrite
+    public class CarDtoWriteEdit
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public bool IsAvailable { get; set; }
-        //public string UrlImage { get; set; }
+        public string? UrlImage { get; set; }
         [NotMapped]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         [Required]
         public string VIN { get; set; }
         [Required]
-        public string Year { get; set; }
-        public string Make { get; set; }
+        public int Year { get; set; }
         [Required]
         public string Trim { get; set; }
         [Required]

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheCarHub", "TheCarHub\TheCarHub.csproj", "{C260BC3F-338B-4559-82F7-4B45843DD03A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheCarHubTests", "TheCarHubTests\TheCarHubTests.csproj", "{D7C18B9A-1546-4D40-A402-E0A75D7527F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheCarHubTests", "TheCarHubTests\TheCarHubTests.csproj", "{D7C18B9A-1546-4D40-A402-E0A75D7527F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,5 @@
-﻿@model TheCarHub.Areas.Admin.DTO.Write.CarDtoWrite
+﻿@using TheCarHub.Areas.Admin.Models
+@model TheCarHub.Areas.Admin.DTO.Write.CarDtoWriteEdit
 
 @{
     ViewData["Title"] = "Edit";
@@ -15,27 +16,28 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
                 <label asp-for="Image" class="control-label"></label>
+                <img src="@Url.Content(@Model.UrlImage.Replace("wwwroot", "~"))" alt="@Model.Name" />
+                <input type="hidden" asp-for="UrlImage" />
                 <div class="customFile">
                     <input asp-for="Image" class="form-control" id="customFile" />
                     <span asp-validation-for="Image" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" value="@Model.Name" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" placeholder="Lorem ipsum..." class="form-control" />
+                <input asp-for="Description" value="@Model.Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Year" class="control-label"></label>
                 <select asp-for="Year" class="form-control">
-                    <option value="">--- Year ---</option>
+                    <option value="@Model.Year)">@Model.Year"</option>
                     @for (int i = 1990; i <= DateTime.Now.Year; i++)
                     {
                         <option value="@i">@i</option>
@@ -44,68 +46,83 @@
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsAvailable" /> @Html.DisplayNameFor(model => model.IsAvailable)
+                <label class="form-check-label">Available
+                    <input class="form-check-input" asp-for="IsAvailable" value="@Model.IsAvailable" />
                 </label>
             </div>
             <div class="form-group">
                 <label asp-for="VIN" class="control-label"></label>
-                <input asp-for="VIN" class="form-control" />
+                <input asp-for="VIN" class="form-control" value="@Model.VIN" />
                 <span asp-validation-for="VIN" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Make" class="control-label"></label>
-                <input asp-for="Make" class="form-control" />
-                <span asp-validation-for="Make" class="text-danger"></span>
+                <label asp-for="CarMakesId" class="control-label">Make</label>
+                <select asp-for="CarMakesId" class="form-control">
+                    @foreach (CarMakes carMakes in ViewBag.CarMakesList as List<CarMakes>)
+                    {
+                        if (carMakes.Id == Model.CarMakesId)
+                        {
+                            <option value="@carMakes.Id)" selected>@carMakes.Name"</option>
+                        }
+                        else
+                        {
+                            <option value="@carMakes.Id">@carMakes.Name</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="CarMakesId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CarModelId" class="control-label"></label>
+                <label asp-for="CarModelId" class="control-label">Model</label>
                 <select asp-for="CarModelId" class="form-control">
-                    <option value="">--- Choose a model ---</option>
-                    <option value="Miata">Miata</option>
-                    <option value="Liberty">Liberty</option>
-                    <option value="Grand Caravan">Grand Caravan</option>
-                    <option value="Explorer">Explorer</option>
-                    <option value="Civic">Civic</option>
-                    <option value="GTI">GTI</option>
-                    <option value="Edge">Edge</option>
-
-                    @*@foreach (var i in Model.Model)
+                    @foreach (CarModel carModel in ViewBag.CarModelList as List<CarModel>)
                     {
-                    <option value="@i">@i</option>
-                    }*@
+                        if (carModel.Id == Model.CarMakesId)
+                        {
+                            <option value="@carModel.Id)" selected>@carModel.Name"</option>
+                        }
+                        else
+                        {
+                            <option value="@carModel.Id">@carModel.Name</option>
+                        }
+                    }
                 </select>
                 <span asp-validation-for="CarModelId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Trim" class="control-label"></label>
-                <input asp-for="Trim" class="form-control" />
+                <input asp-for="Trim" value="@Model.Trim" class="form-control" />
                 <span asp-validation-for="Trim" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PurchaseDate" class="control-label"></label>
-                <input asp-for="PurchaseDate" type="date" class="form-control" />
+                <input asp-for="PurchaseDate" type="date" value="@Model.PurchaseDate.Date.ToString("yyyy-MM-dd")" class="form-control" />
                 <span asp-validation-for="PurchaseDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Purchase" class="control-label"></label>
-                <input asp-for="Purchase" class="form-control" />
+                <input asp-for="Purchase" type="number" value="@Model.Purchase" class="form-control" />
                 <span asp-validation-for="Purchase" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Repairs" class="control-label"></label>
-                <input asp-for="Repairs" class="form-control" />
+                <input asp-for="Repairs" value="@Model.Repairs" class="form-control" />
                 <span asp-validation-for="Repairs" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="RepairsCost" class="control-label"></label>
-                <input asp-for="RepairsCost" class="form-control" />
+                <input asp-for="RepairsCost" type="number" value="@Model.RepairsCost" class="form-control" />
                 <span asp-validation-for="RepairsCost" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="LotDate" class="control-label"></label>
-                <input asp-for="LotDate" type="date" class="form-control" />
+                <input asp-for="LotDate" type="date" value="@Model.LotDate.Date.ToString("yyyy-MM-dd")" class="form-control" />
                 <span asp-validation-for="LotDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SaleDate" class="control-label"></label>
+                <input asp-for="SaleDate" type="date" value="@Model.SaleDate.Date.ToString("yyyy-MM-dd")" class="form-control" />
+                <span asp-validation-for="SaleDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

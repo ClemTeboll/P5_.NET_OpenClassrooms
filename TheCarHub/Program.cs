@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TheCarHub.Areas.Admin.Helpers;
@@ -79,9 +80,15 @@ app.MapAreaControllerRoute(
     areaName: "Admin",
     pattern: "Admin/{controller=Cars}/{action=Index}/{id?}");
 
+app.MapAreaControllerRoute(
+    name: "AreaProductDetails",
+    areaName: "ProductDetails",
+    pattern: "ProductDetails/{controller=ProductDetails}/{action=Index}/{id?}");
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.MapRazorPages();
 
