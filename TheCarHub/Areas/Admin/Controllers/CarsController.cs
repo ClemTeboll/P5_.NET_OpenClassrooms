@@ -73,8 +73,6 @@ namespace TheCarHub.Areas.Admin.Controllers
             CarDtoRead carDtoRead = _mapper.Map<CarDtoRead>(carObject);
 
             return View(carDtoRead);
-
-            //return RedirectToAction("", "", new { area = "" });
         }
 
         // GET: Admin/Cars/Create
