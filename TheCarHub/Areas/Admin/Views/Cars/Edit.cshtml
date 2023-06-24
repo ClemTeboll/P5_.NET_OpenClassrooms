@@ -10,8 +10,8 @@
 
 <h4>Car</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="detail-page">
+    <figure class="product">
         <form asp-action="Edit" enctype="multipart/form-data" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -121,19 +121,20 @@
             </div>
             <div class="form-group">
                 <label asp-for="SaleDate" class="control-label"></label>
-                <input asp-for="SaleDate" type="date" value="@Model.SaleDate.Date.ToString("yyyy-MM-dd")" class="form-control" />
+                <input asp-for="SaleDate" type="date" value="@Model.SaleDate?.Date.ToString("yyyy-MM-dd")" class="form-control" />
                 <span asp-validation-for="SaleDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+    </figure>
+    <div class="actions">
+        <a asp-action="Index">Back to List</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

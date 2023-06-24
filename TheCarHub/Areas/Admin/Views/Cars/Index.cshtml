@@ -5,28 +5,28 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>All cars</h1>
 
-<p>
-    <a asp-area="Admin" asp-controller="CarMakes" asp-action="Index">Add Makes</a>
-</p>
-<p>
-    <a asp-area="Admin" asp-controller="CarModels" asp-action="Index">Add Model</a>
-</p>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<div>
+<div class="admin-actions">
+    <p>
+        <a asp-area="Admin" asp-controller="CarMakes" asp-action="Index">Add Makes</a>
+    </p>
+    <p>
+        <a asp-area="Admin" asp-controller="CarModels" asp-action="Index">Add Model</a>
+    </p>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+</div>
+
+<div class="product-list">
 @foreach (var item in Model) {
-    <figure>
-            <img src="@Url.Content(item.UrlImage.Replace("wwwroot", "~"))" alt="@item.Name" />
-            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+    <figure class="product">
+        <img src="@Url.Content(item.UrlImage.Replace("wwwroot", "~"))" alt="@item.Name" />
         <figcaption>
-            <p>
+            <h2>
                 @Html.DisplayFor(modelItem => item.Name)
-            </p>
+            </h2>
             <p>
                 @Html.DisplayFor(modelItem => item.Year)
             </p>
@@ -34,9 +34,14 @@
                @Html.DisplayFor(modelItem => item.Description)
             </p>
             <p>
-                @Html.DisplayFor(modelItem => item.SellingPrice)
+                @Html.DisplayFor(modelItem => item.SellingPrice) $
             </p>
         </figcaption>
+        <div class="product-actions">
+            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+        </div>
     </figure>
 }
 </div>

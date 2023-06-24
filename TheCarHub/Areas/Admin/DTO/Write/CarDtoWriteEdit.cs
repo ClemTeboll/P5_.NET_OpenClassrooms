@@ -29,7 +29,7 @@ namespace TheCarHub.Areas.Admin.DTO.Write
         [Required]
         public DateTime LotDate { get; set; }
         public decimal SellingPrice { get; set; }
-        public DateTime SaleDate { get; set; }
+        public DateTime? SaleDate { get; set; }
         [Required]
         public int CarMakesId { get; set; }
         [Required]

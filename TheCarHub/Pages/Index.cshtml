@@ -5,16 +5,16 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<div>
+<div class="product-list">
     @foreach (var item in Model._carDtoReadList)
     {
-        <figure>
+        <figure class="product">
             <a asp-area="ProductDetails" asp-controller="ProductDetails" asp-action="Details" asp-route-id="@item.Id">
                 <img src="@Url.Content(item.UrlImage.Replace("wwwroot", "~"))" alt="@item.Name" />
                 <figcaption>
-                    <p>
+                    <h2>
                         @Html.DisplayFor(modelItem => item.Name)
-                    </p>
+                    </h2>
                     <p>
                         @Html.DisplayFor(modelItem => item.Year)
                     </p>
@@ -22,7 +22,7 @@
                         @Html.DisplayFor(modelItem => item.Description)
                     </p>
                     <p>
-                        @Html.DisplayFor(modelItem => item.SellingPrice)
+                        @Html.DisplayFor(modelItem => item.SellingPrice) $
                     </p>
                 </figcaption>
             </a>

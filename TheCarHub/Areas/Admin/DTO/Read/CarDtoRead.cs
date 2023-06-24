@@ -13,6 +13,7 @@
         public string Model { get; set; }
         public string Trim { get; set; }
         public DateTime LotDate { get; set; }
+        public DateTime? SalesDate { get; set; }
         public decimal SellingPrice { get; set; }
     }
 }
