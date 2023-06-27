@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace TheCarHub.Areas.Admin.Models
+﻿namespace TheCarHub.Areas.Admin.Models
 {
     public class Car
     {

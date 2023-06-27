@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TheCarHub.Areas.Admin.Models;
-using TheCarHub.Areas.Admin.DTO.Read;
 
 namespace TheCarHub.Data
 {

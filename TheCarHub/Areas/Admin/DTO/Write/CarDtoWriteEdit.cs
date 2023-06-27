@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using TheCarHub.Areas.Admin.Models;
 
 namespace TheCarHub.Areas.Admin.DTO.Write
 {
