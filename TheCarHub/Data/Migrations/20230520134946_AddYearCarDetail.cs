@@ -14,7 +14,7 @@ namespace TheCarHub.Data.Migrations
             migrationBuilder.AddColumn<DateTime>(
                 name: "Year",
                 table: "CarDetails",
-                type: "datetime2",
+                type: "int",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
         }
