@@ -7,3 +7,5 @@ After that, open the project. Open the Package Manager Console and run the follo
 Update-Database
 
 This should automatically update Database from the migrations files.
+
+You can also upload database datas using TheCarHub.bak file.
